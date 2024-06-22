@@ -54,6 +54,8 @@ def print_metric():
             if dash != '-' or not date.startswith('[') or method != '"GET'\
                     or url != '/projects/260' or protocol != 'HTTP/1.1"':
                 continue
+            if not ip or not status_code or not file_size:
+                continue
             # status_code = int(status_code)
             file_size = int(file_size)
 
