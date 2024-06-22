@@ -31,35 +31,46 @@ def handle_signal(sig, frame):
 
 signal.signal(signal.SIGINT, handle_signal)
 
-for line in sys.stdin:
-    try:
-        metrics = line.strip().split()
-        # print(f"{len(metrics)}: {metrics}")
-        if len(metrics) != 9:
+
+def print_metric():
+    """Parses and prints metrics from stdin"""
+    global total_file_size
+    global line_count
+    for line in sys.stdin:
+        try:
+            metrics = line.strip().split()
+            # print(f"{len(metrics)}: {metrics}")
+            if len(metrics) != 9:
+                continue
+            ip = metrics[0]
+            dash = metrics[1]
+            date = metrics[2]
+            method = metrics[4]
+            url = metrics[5]
+            protocol = metrics[6]
+            status_code = metrics[7]
+            file_size = metrics[8]
+
+            if dash != '-' or not date.startswith('[') or method != '"GET'\
+                    or url != '/projects/260' or protocol != 'HTTP/1.1"':
+                continue
+            # status_code = int(status_code)
+            file_size = int(file_size)
+
+            if status_code in status_codes.keys():
+                status_codes[status_code] += 1
+
+            total_file_size += int(file_size)
+            line_count += 1
+
+            if line_count % 10 == 0:
+                print_stats()
+
+        except Exception as e:
             continue
-        ip = metrics[0]
-        dash = metrics[1]
-        date = metrics[2]
-        method = metrics[4]
-        url = metrics[5]
-        protocol = metrics[6]
-        status_code = metrics[7]
-        file_size = metrics[8]
 
-        if dash != '-' or not date.startswith('[') or method !=
-        '"GET' or url != '/projects/260' or protocol != 'HTTP/1.1"':
-            continue
-        # status_code = int(status_code)
-        file_size = int(file_size)
+    print_stats()
 
-        if status_code in status_codes.keys():
-            status_codes[status_code] += 1
-        total_file_size += int(file_size)
-        line_count += 1
 
-        if line_count % 10 == 0:
-            print_stats()
-    except Exception as e:
-        continue
-
-print_stats()
+if __name__ == "__main__":
+    print_metric()
