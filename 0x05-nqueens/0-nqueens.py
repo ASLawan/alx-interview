@@ -4,10 +4,9 @@
 
 """
 import sys
-from typing import List
 
 
-def is_possible(board: List[int], row: int, col: int) -> bool:
+def is_possible(board, row, col):
     """Check if its possible to place a queen at given position"""
     for i in range(row):
         if board[i] == col or board[i] - i == \
@@ -16,7 +15,7 @@ def is_possible(board: List[int], row: int, col: int) -> bool:
     return True
 
 
-def backtrack(n: int, board: List[int], row: int) -> None:
+def backtrack(n, board, row):
     """Recursively solve the N Queens problem"""
     if row == n:
         print_board(board)
@@ -28,7 +27,7 @@ def backtrack(n: int, board: List[int], row: int) -> None:
             backtrack(n, board, row + 1)
 
 
-def print_board(board: list[int]) -> None:
+def print_board(board):
     """Prints the solved N Queens board"""
     solution = []
     for row in range(len(board)):
@@ -36,7 +35,7 @@ def print_board(board: list[int]) -> None:
     print(solution)
 
 
-def main() -> None:
+def main():
     """Program entry point -  reads cmdline inputs"""
     if len(sys.argv) != 2:
         print("Usage: nqueens N")
