@@ -16,6 +16,8 @@ def isWinner(x, nums):
         return True
     # Precompute prime numbers up to the maximum possible n in nums
     max_n = max(nums)
+    if x == 0 or x < 0:
+        return None
     primes = [False, False] + [True] * (max_n - 1)
     for i in range(2, int(max_n ** 0.5) + 1):
         if primes[i]:
